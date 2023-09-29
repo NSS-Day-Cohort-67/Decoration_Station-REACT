@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import { getSeasons, getCategories, editItem } from "./services"
 
 export const DecorationEditForm = ({item}) => {
 
@@ -13,14 +14,12 @@ export const DecorationEditForm = ({item}) => {
     const [categories, setCategories] = useState([])
 
     useEffect(() => {
-        fetch("http://localhost:8088/seasons")
-            .then((res) => res.json())
+        getSeasons()
             .then((data) => {
                 setSeasons(data)
             })
 
-        fetch("http://localhost:8088/categories")
-            .then((res) => res.json())
+        getCategories()
             .then((data) => {
                 setCategories(data)
             })
@@ -28,17 +27,7 @@ export const DecorationEditForm = ({item}) => {
 
     const handleUpdate = (event) => {
         event.preventDefault()
-        console.log("this is clicked")
-
-        return fetch(`http://localhost:8088/items/${item.id}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(userChoices)
-        })
-
-
+        editItem(item.id, userChoices)
     }
 
 

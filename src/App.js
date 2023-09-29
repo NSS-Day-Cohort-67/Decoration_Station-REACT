@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import './App.css';
-import { getAllItems } from './services';
+import { getAllItems, deleteItem } from './services';
 import { NewDecorationForm } from './newDecorationForm';
 import { DecorationEditForm } from './decorationEdit';
 
@@ -8,20 +8,14 @@ export const App = () => {
 
   const [items, setItems] = useState([])
 
+
   useEffect(() => {
     getAllItems().then(items => setItems(items))
   }, [])
-
+  
   const handleDelete = (event, id) => {
     event.preventDefault()
-    console.log("this was clicked")
-
-    return fetch(`http://localhost:8088/items/${id}`, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
+    deleteItem(id)
   }
 
   return (
