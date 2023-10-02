@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
+import { editItem } from "./services"
 
-export const DecorationEditForm = ({item}) => {
+export const DecorationEditForm = ({ item, seasons, categories}) => {
 
     const [userChoices, updateDecoration] = useState({
         name: item.name,
@@ -9,38 +10,10 @@ export const DecorationEditForm = ({item}) => {
         categoryId: item.categoryId
     })
 
-    const [seasons, setSeasons] = useState([])
-    const [categories, setCategories] = useState([])
-
-    useEffect(() => {
-        fetch("http://localhost:8088/seasons")
-            .then((res) => res.json())
-            .then((data) => {
-                setSeasons(data)
-            })
-
-        fetch("http://localhost:8088/categories")
-            .then((res) => res.json())
-            .then((data) => {
-                setCategories(data)
-            })
-    }, [])
-
     const handleUpdate = (event) => {
         event.preventDefault()
-        console.log("this is clicked")
-
-        return fetch(`http://localhost:8088/items/${item.id}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(userChoices)
-        })
-
-
+        editItem(item.id, userChoices)
     }
-
 
     return (
         <form>

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
+import { saveNewItem} from "./services"
 
-export const NewDecorationForm = () => {
+export const NewDecorationForm = ({seasons, categories}) => {
 
     const [userChoices, setUserChoices] = useState({
         name: '',
@@ -8,22 +9,6 @@ export const NewDecorationForm = () => {
         seasonId: 0,
         categoryId: 0
     })
-    const [seasons, setSeasons] = useState([])
-    const [categories, setCategories] = useState([])
-
-    useEffect(() => {
-        fetch("http://localhost:8088/seasons")
-            .then((res) => res.json())
-            .then((data) => {
-                setSeasons(data)
-            })
-
-        fetch("http://localhost:8088/categories")
-            .then((res) => res.json())
-            .then((data) => {
-                setCategories(data)
-            })
-    }, [])
 
     const handleDecorationSave = (event) => {
         event.preventDefault()
@@ -34,20 +19,11 @@ export const NewDecorationForm = () => {
             userChoices.categoryId &&
             userChoices.seasonId
         ) {
-
-            fetch("http://localhost:8088/items", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(userChoices)
-            })
-
+            saveNewItem(userChoices)
         } else {
             window.alert("please finish filling out this form")
         }
     }
-
 
     return (
         <form>
@@ -56,9 +32,7 @@ export const NewDecorationForm = () => {
             <fieldset>
                 <label>Name: </label>
                 <input
-                    required
                     type="text"
-                    id="name"
                     value={userChoices.name}
                     className="form-control"
                     onChange={(event) => {
@@ -71,9 +45,7 @@ export const NewDecorationForm = () => {
             <fieldset>
                 <label>Image: </label>
                 <input
-                    required
                     type="text"
-                    id="imageUrl"
                     value={userChoices.imageUrl}
                     className="form-control"
                     onChange={(event) => {
@@ -93,7 +65,6 @@ export const NewDecorationForm = () => {
                         return (
                             <div key={season.id}>{season.name} 
                                 <input
-                                    required
                                     type="radio"
                                     value={season.id}
                                     checked={userChoices.seasonId === season.id}
@@ -116,8 +87,8 @@ export const NewDecorationForm = () => {
                         return (
                             <div key={category.id}>{category.name}
                                 <input
-                                    required
                                     type="radio"
+                                    name="season"
                                     value={category.id}
                                     checked={userChoices.categoryId === category.id}
                                     onChange={(event) => {

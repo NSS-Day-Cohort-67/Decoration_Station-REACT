@@ -1,32 +1,29 @@
 import { useState, useEffect } from 'react';
 import './App.css';
-import { getAllItems } from './services';
+import { getAllItems, deleteItem, getCategories, getSeasons } from './services';
 import { NewDecorationForm } from './newDecorationForm';
 import { DecorationEditForm } from './decorationEdit';
 
 export const App = () => {
 
   const [items, setItems] = useState([])
+  const [seasons, setSeasons] = useState([])
+  const [categories, setCategories] = useState([])
 
   useEffect(() => {
     getAllItems().then(items => setItems(items))
+    getSeasons().then(seasons => setSeasons(seasons))
+    getCategories().then(categories => setCategories(categories))
   }, [])
-
+  
   const handleDelete = (event, id) => {
     event.preventDefault()
-    console.log("this was clicked")
-
-    return fetch(`http://localhost:8088/items/${id}`, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
+    deleteItem(id)
   }
 
   return (
     <div className="App">
-      <NewDecorationForm />
+      <NewDecorationForm seasons={seasons} categories={categories}/>
       <section className="items-container">
         <ul>
           {
@@ -40,7 +37,7 @@ export const App = () => {
                   <button onClick={(event) => {
                     handleDelete(event, item.id)
                   }}>Delete</button>
-                  <DecorationEditForm item={item}/>
+                  <DecorationEditForm item={item} seasons={seasons} categories={categories}/>
                 </li>
               </div>
             })
