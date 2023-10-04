@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react"
 import { getSeasons, getCategories, editItem } from "./services"
+import { useParams } from "react-router-dom"
 
-export const DecorationEditForm = ({item}) => {
+export const DecorationEditForm = () => {
+
+    const [item, setItem] = useState({})
 
     const [userChoices, updateDecoration] = useState({
         name: item.name,
@@ -12,6 +15,17 @@ export const DecorationEditForm = ({item}) => {
 
     const [seasons, setSeasons] = useState([])
     const [categories, setCategories] = useState([])
+
+    const {id} = useParams()
+
+    useEffect(() => {
+        fetch(`http://localhost:8088/items/${id}`)
+        .then(res => res.json())
+        .then((data) => {
+            setItem(data)
+            updateDecoration(data)
+        })
+    }, [])
 
     useEffect(() => {
         getSeasons()
