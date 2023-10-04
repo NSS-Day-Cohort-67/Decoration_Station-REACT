@@ -8,42 +8,41 @@ export const ItemsList = () => {
 
 
     useEffect(() => {
-      getAllItems().then(items => setItems(items))
+        getAllItems().then(items => setItems(items))
     }, [])
 
     const handleDelete = (event, id) => {
         event.preventDefault()
         deleteItem(id)
-      }
+    }
 
     const navigate = useNavigate()
 
     return (
-            <div className="App">
-      {/* <NewDecorationForm /> */}
-      <section className="items-container">
-        <ul>
-          {
-            items.map(item => {
-              return <div className="item-card" key={item.id}>
-                <li>
-                  <img className="item-img" src={item.imageUrl} />
-                  <div className="item-name">{item.name}</div>
-                  <div>{item.season.name}</div>
-                  <div>{item.category.name}</div>
-                  <button onClick={(event) => {
-                    handleDelete(event, item.id)
-                  }}>Delete</button>
-                  <button onClick={() => {
-                    navigate(`/items/${item.id}`)
-                  }}>Edit</button>
-                </li>
-              </div>
-            })
-          }
-        </ul>
-      </section>
-      
-    </div>
+        <div className="App">
+            <section className="items-container">
+                <ul>
+                    {
+                        items.map(item => {
+                            return <div className="item-card" key={item.id}>
+                                <li>
+                                    <img className="item-img" src={item.imageUrl} />
+                                    <div className="item-name">{item.name}</div>
+                                    <div>{item.season.name}</div>
+                                    <div>{item.category.name}</div>
+                                    <button onClick={(event) => {
+                                        handleDelete(event, item.id)
+                                    }}>Delete</button>
+                                    <button onClick={() => {
+                                        navigate(`/items/${item.id}`)
+                                    }}>Edit</button>
+                                </li>
+                            </div>
+                        })
+                    }
+                </ul>
+            </section>
+
+        </div>
     )
 }
