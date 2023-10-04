@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
-import { getSeasons, getCategories, saveNewItem} from "./services"
+import { saveNewItem} from "./services"
 
-export const NewDecorationForm = () => {
+export const NewDecorationForm = ({seasons, categories}) => {
 
     const [userChoices, setUserChoices] = useState({
         name: '',
@@ -9,21 +9,6 @@ export const NewDecorationForm = () => {
         seasonId: 0,
         categoryId: 0
     })
-    
-    const [seasons, setSeasons] = useState([])
-    const [categories, setCategories] = useState([])
-
-    useEffect(() => {
-        getSeasons()
-            .then((data) => {
-                setSeasons(data)
-            })
-
-        getCategories()
-            .then((data) => {
-                setCategories(data)
-            })
-    }, [])
 
     const handleDecorationSave = (event) => {
         event.preventDefault()

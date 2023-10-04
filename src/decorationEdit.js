@@ -44,7 +44,6 @@ export const DecorationEditForm = () => {
         editItem(item.id, userChoices)
     }
 
-
     return (
         <form>
             <h2>Edit Decoration</h2>
